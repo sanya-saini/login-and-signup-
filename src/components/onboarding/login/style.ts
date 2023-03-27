@@ -21,12 +21,21 @@ export const styles = StyleSheet.create({
     marginBottom:130,
   },
 
-  input: {
+  input1: {
     height: 50,
     marginHorizontal: 25,
     marginVertical: 20,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 10,
+  },
+
+  input2: {
+    height: 50,
+    marginHorizontal: 25,
+    marginVertical: 20,
+    borderWidth: 1,
+    padding: 5,
     borderRadius: 10,
   },
 

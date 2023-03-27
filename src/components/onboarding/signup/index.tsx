@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {View, Text, TextInput, ImageBackground, TouchableOpacity, Alert} from "react-native";
+import React, {useState, useRef} from "react";
+import {View, Text, TextInput, Image, ImageBackground, TouchableOpacity, Alert} from "react-native";
 import { styles } from "./style";
 
 
@@ -9,6 +9,20 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmpassword] = useState('');
   const [zip, setZip] = useState('');
+  const [opacity, setOpacity] = useState(0.5);
+
+
+  const nameRef = useRef()
+  const emailRef = useRef()
+  const passwordRef = useRef()
+  const confirmpasswordRef = useRef()
+
+  const newopacity =()=>{
+    const passregrex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+    const emailregrex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    (passregrex&&emailregrex)? setOpacity(1):setOpacity(0.5);
+  };
 
   const validation = () => {
 
@@ -22,7 +36,6 @@ const Signup = () => {
       Alert.alert("Invalid Name.");
       return null
     }
-
 
     // email
     const emailregex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -70,6 +83,8 @@ const Signup = () => {
       Alert.alert("Invalid Zip Code.");
       return null
     }
+    else
+    Alert.alert("Register Successful.")
   }
 
   return(
@@ -83,32 +98,44 @@ const Signup = () => {
 
         <TextInput style={styles.input} 
         placeholder= 'Name'
-        onChangeText={setName} />
+        onChangeText={setName}
+        onSubmitEditing={()=>nameRef.current.focus()} 
+        blurOnSubmit={false} />
 
         <TextInput style={styles.input} 
         placeholder= 'Email'
         value={email}
-        onChangeText={setEmail} />
+        onChangeText={setEmail}
+        ref={nameRef}
+        onSubmitEditing={()=>emailRef.current.focus()}
+        blurOnSubmit={false} />
 
         <TextInput style={styles.input} 
         placeholder= 'Password'
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true} />
+        secureTextEntry={true} 
+        ref={emailRef}
+        onSubmitEditing={()=>passwordRef.current.focus()}
+        blurOnSubmit={false} />
 
         <TextInput style={styles.input} 
-        value={password}
         onChangeText={setConfirmpassword}
         secureTextEntry={true}
-        placeholder= 'Confirm Password' />
+        placeholder= 'Confirm Password'
+        ref={passwordRef}
+        onSubmitEditing={()=>confirmpasswordRef.current.focus()}
+        blurOnSubmit={false} />
 
         <TextInput style={styles.input} 
         placeholder= 'Zip Code'
-        onChangeText={setZip} />
+        onChangeText={setZip} 
+        ref={confirmpasswordRef}
+        onEndEditing={newopacity} />
        
       </View>
-      <TouchableOpacity style={styles.btn1} onPress={validation} >
-        <Text style={styles.txt1}> Sign Up</Text>
+      <TouchableOpacity style={[styles.btn1,{opacity:opacity}]} onPress={validation} >
+        <Text style={styles.txt1}>Sign Up</Text>
       </TouchableOpacity>
     
       
